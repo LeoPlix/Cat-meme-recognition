@@ -9,9 +9,13 @@ Aplicação em Python que utiliza visão computacional (OpenCV + MediaPipe) para
 | Gesto da Mão | Meme Exibido | Descrição |
 | :--- | :---: | :--- |
 | **Mão neutra ou sem mãos na câmara** | **Gato Parado** (`neutral.jpg`) | O gato laranja a olhar fixamente com orelhas baixas. |
-| **Indicador levantado para cima (☝️)** | **Erm Ackshuallay** (`erhm_actually.jpg`) | O gato com óculos e dentinhos de esquilo apontando para cima. |
+| **Indicador levantado para cima (☝️)** | **Erm Ackshuallay** (`erhm_actually.jpg`) | O gato com óculos e dentinhos salientes apontando para cima. |
 | **Punho fechado virado para a câmara (👊)** | **Murro do Gato** (`punch.jpg`) | O gato a desferir um soco na direção do ecrã. |
-| **Duas mãos com indicadores a apontar um para o outro (👉👈)** | **Gato Corado / Tímido** (`shy.jpg`) | O gato laranja com bochechas coradas e dedos indicadores a tocarem-se. |
+| **Duas mãos com indicadores a apontar (👉👈)** | **Gato Corado / Tímido** (`shy.jpg`) | O gato laranja com bochechas coradas e dedos apontados. |
+| **Polegar levantado para cima (👍)** | **Thumbs Up Cat** (`thumbs_up.png`) | O gato lendário a fazer sinal de positivo com o polegar. |
+| **Sinal do Rock / Corninhos (🤘)** | **Rock Guitar Cat** (`rock_guitar.jpg`) | O gatinho em pé a tocar guitarra elétrica como um rockstar. |
+| **Pistola com os dedos (👉 / 🔫)** | **Finger Gun Cat** (`finger_gun.jpg`) | O gato descontraído no sofá com mãozinha em formato de pistola. |
+| **Mini coração coreano (🫰)** | **Finger Heart Cat** (`finger_heart.png`) | O gatinho com língua de fora a fazer o coração com polegar e indicador cruzados. |
 
 ---
 
@@ -33,7 +37,8 @@ python3 main.py
 
 ## ⌨️ Controlos de Teclado Durante a Execução
 
-- **`m`**: Alterna entre a visualização **Split** (Câmara com esqueleto da mão ao lado do Meme) e **Meme em Ecrã Completo**.
+- **`m`**: Alterna entre a visualização **Split** (Câmara ao lado do Meme) e **Meme em Ecrã Completo**.
+- **`l`**: Liga ou desliga as linhas do esqueleto da mão na câmara.
 - **`p`**: Liga ou desliga a miniatura da câmara (PiP - *Picture-in-Picture*) no modo de ecrã completo.
 - **`c`**: Alterna o índice da câmara (caso possua mais do que uma webcam conectada).
 - **`q`** ou **`ESC`**: Fecha a aplicação.
