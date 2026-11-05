@@ -71,20 +71,13 @@ def is_rock_sign(landmarks) -> bool:
     return idx_ext and pky_ext and mid_folded and rng_folded and upward
 
 
-def is_finger_gun(landmarks) -> bool:
+def is_peace_sign(landmarks) -> bool:
     idx_ext = is_finger_extended(landmarks, 8, 6, 5, 0)
-    idx_tip = landmarks[8]
-    idx_mcp = landmarks[5]
-
+    mid_ext = is_finger_extended(landmarks, 12, 10, 9, 0)
     rng_folded = is_finger_folded(landmarks, 16, 14, 13, 0)
     pky_folded = is_finger_folded(landmarks, 20, 18, 17, 0)
-    thumb_up = landmarks[4].y < landmarks[2].y
 
-    dx = abs(idx_tip.x - idx_mcp.x)
-    dy = abs(idx_tip.y - idx_mcp.y)
-    horizontal = (dx > 0.07) and (dx > dy * 0.7)
-
-    return idx_ext and rng_folded and pky_folded and thumb_up and horizontal and (dist2d(landmarks[4], idx_tip) > 0.08)
+    return idx_ext and mid_ext and rng_folded and pky_folded
 
 
 def is_fist_facing_camera(landmarks) -> bool:
@@ -163,8 +156,8 @@ def classify_gesture(all_hand_landmarks: List[List]) -> str:
             return 'erhm_actually'
 
     for landmarks in all_hand_landmarks:
-        if is_finger_gun(landmarks):
-            return 'finger_gun'
+        if is_peace_sign(landmarks):
+            return 'peace_sign'
 
     for landmarks in all_hand_landmarks:
         if is_fist_facing_camera(landmarks):

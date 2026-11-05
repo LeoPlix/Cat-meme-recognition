@@ -10,7 +10,7 @@ Mostra memes de gatos correspondentes a gestos com as mãos captados pela webcam
 - **Indicadores apontados um para o outro**: Gato corado (`shy.jpg`)
 - **Polegar para cima**: Thumbs up (`thumbs_up.png`)
 - **Sinal do rock**: Gato com guitarra (`rock_guitar.jpg`)
-- **Pistola com os dedos**: Gato pistola (`finger_gun.jpg`)
+- **Sinal da paz (peace sign)**: Gato da paz (`peace_sign.jpg`)
 
 ## Como correr
 

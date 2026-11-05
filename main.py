@@ -25,7 +25,7 @@ MEME_FILES = {
     'shy': os.path.join(ASSETS_DIR, 'shy.jpg'),
     'thumbs_up': os.path.join(ASSETS_DIR, 'thumbs_up.png'),
     'rock_guitar': os.path.join(ASSETS_DIR, 'rock_guitar.jpg'),
-    'finger_gun': os.path.join(ASSETS_DIR, 'finger_gun.jpg'),
+    'peace_sign': os.path.join(ASSETS_DIR, 'peace_sign.jpg'),
 }
 
 
