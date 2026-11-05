@@ -1,53 +1,27 @@
-# 🐱 Cat Meme Recognition
+# Cat Meme Recognition
 
-Aplicação em Python que utiliza visão computacional (OpenCV + MediaPipe) para reconhecer a posição das mãos pela câmara e exibir memes de gatos em tempo real correspondentes a cada gesto!
+Mostra memes de gatos correspondentes a gestos com as mãos captados pela webcam.
 
----
+## Gestos
 
-## ✋ Gestos e Memes Correspondentes
+- **Mão neutra / sem mão**: Gato parado (`neutral.jpg`)
+- **Indicador para cima**: Erm Ackshuallay (`erhm_actually.jpg`)
+- **Punho virado para a câmara**: Gato murro (`punch.jpg`)
+- **Indicadores apontados um para o outro**: Gato corado (`shy.jpg`)
+- **Polegar para cima**: Thumbs up (`thumbs_up.png`)
+- **Sinal do rock**: Gato com guitarra (`rock_guitar.jpg`)
+- **Pistola com os dedos**: Gato pistola (`finger_gun.jpg`)
 
-| Gesto da Mão | Meme Exibido | Descrição |
-| :--- | :---: | :--- |
-| **Mão neutra ou sem mãos na câmara** | **Gato Parado** (`neutral.jpg`) | O gato laranja a olhar fixamente com orelhas baixas. |
-| **Indicador levantado para cima (☝️)** | **Erm Ackshuallay** (`erhm_actually.jpg`) | O gato com óculos e dentinhos salientes apontando para cima. |
-| **Punho fechado virado para a câmara (👊)** | **Murro do Gato** (`punch.jpg`) | O gato a desferir um soco na direção do ecrã. |
-| **Duas mãos com indicadores a apontar (👉👈)** | **Gato Corado / Tímido** (`shy.jpg`) | O gato laranja com bochechas coradas e dedos apontados. |
-| **Polegar levantado para cima (👍)** | **Thumbs Up Cat** (`thumbs_up.png`) | O gato lendário a fazer sinal de positivo com o polegar. |
-| **Sinal do Rock / Corninhos (🤘)** | **Rock Guitar Cat** (`rock_guitar.jpg`) | O gatinho em pé a tocar guitarra elétrica como um rockstar. |
-| **Pistola com os dedos (👉 / 🔫)** | **Finger Gun Cat** (`finger_gun.jpg`) | O gato descontraído no sofá com mãozinha em formato de pistola. |
-| **Mini coração coreano (🫰)** | **Finger Heart Cat** (`finger_heart.png`) | O gatinho com língua de fora a fazer o coração com polegar e indicador cruzados. |
+## Como correr
 
----
-
-## 🚀 Como Executar
-
-### Opção 1: Execução direta com o script facilitador
 ```bash
 ./run.sh
 ```
 
-### Opção 2: Utilizando o ambiente virtual
-```bash
-# Ativar o ambiente virtual e executar
-source .venv/bin/activate
-python3 main.py
-```
+## Teclas
 
----
-
-## ⌨️ Controlos de Teclado Durante a Execução
-
-- **`m`**: Alterna entre a visualização **Split** (Câmara ao lado do Meme) e **Meme em Ecrã Completo**.
-- **`l`**: Liga ou desliga as linhas do esqueleto da mão na câmara.
-- **`p`**: Liga ou desliga a miniatura da câmara (PiP - *Picture-in-Picture*) no modo de ecrã completo.
-- **`c`**: Alterna o índice da câmara (caso possua mais do que uma webcam conectada).
-- **`q`** ou **`ESC`**: Fecha a aplicação.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Python 3**
-- **MediaPipe Tasks Vision** (`HandLandmarker`) para extração precisa dos 21 landmarks tridimensionais de cada mão.
-- **OpenCV** para captura e processamento do fluxo de vídeo em tempo real.
-- **Gesture Smoothing Buffer** para garantir transições suaves entre memes sem cintilação.
+- `m`: Alternar entre split e ecrã completo
+- `l`: Ligar/desligar esqueleto da mão
+- `p`: Ligar/desligar preview da câmara
+- `c`: Trocar de câmara
+- `q` / `ESC`: Sair
