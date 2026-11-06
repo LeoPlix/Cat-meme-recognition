@@ -136,12 +136,72 @@ def is_shy_pose(all_hand_landmarks: List[List]) -> bool:
     return left_points_right and right_points_left and same_horizontal_level and converging
 
 
+def is_open_palm(landmarks) -> bool:
+    for tip, pip, mcp in [(8, 6, 5), (12, 10, 9), (16, 14, 13), (20, 18, 17)]:
+        if not is_finger_extended(landmarks, tip, pip, mcp, 0):
+            return False
+        if is_finger_folded(landmarks, tip, pip, mcp, 0):
+            return False
+        if landmarks[tip].y > landmarks[mcp].y:
+            return False
+    return True
+
+
+def is_cinema_pose(all_hand_landmarks: List[List]) -> bool:
+    if len(all_hand_landmarks) < 2:
+        return False
+    return is_open_palm(all_hand_landmarks[0]) and is_open_palm(all_hand_landmarks[1])
+
+
+def is_tongue_out(face_blendshapes, threshold: float = 0.35) -> bool:
+    if not face_blendshapes:
+        return False
+    for category in face_blendshapes[0]:
+        if category.category_name == 'tongueOut':
+            return category.score > threshold
+    return False
+
+
+def is_one_eyebrow_raised(face_blendshapes, face_landmarks=None) -> bool:
+    if not face_blendshapes:
+        return False
+
+    shapes = {c.category_name: c.score for c in face_blendshapes[0]}
+    left_up = shapes.get('browOuterUpLeft', 0.0)
+    right_up = shapes.get('browOuterUpRight', 0.0)
+    left_down = shapes.get('browDownLeft', 0.0)
+    right_down = shapes.get('browDownRight', 0.0)
+
+    up_diff = abs(left_up - right_up)
+    max_up = max(left_up, right_up)
+
+    if (max_up > 0.35) and (up_diff > 0.25):
+        return True
+
+    combined_diff = abs((left_up - left_down) - (right_up - right_down))
+    if (combined_diff > 0.40) and (max_up > 0.28):
+        return True
+
+    if face_landmarks and len(face_landmarks) > 0:
+        lms = face_landmarks[0]
+        d_left = dist2d(lms[105], lms[159])
+        d_right = dist2d(lms[334], lms[386])
+        d_eyes = max(dist2d(lms[33], lms[263]), 1e-4)
+        if (abs(d_left - d_right) / d_eyes > 0.08) and (max_up > 0.25):
+            return True
+
+    return False
+
+
 def classify_gesture(all_hand_landmarks: List[List]) -> str:
     if not all_hand_landmarks:
         return 'neutral'
 
-    if len(all_hand_landmarks) >= 2 and is_shy_pose(all_hand_landmarks):
-        return 'shy'
+    if len(all_hand_landmarks) >= 2:
+        if is_cinema_pose(all_hand_landmarks):
+            return 'cinema'
+        if is_shy_pose(all_hand_landmarks):
+            return 'shy'
 
     for landmarks in all_hand_landmarks:
         if is_rock_sign(landmarks):

@@ -11,6 +11,9 @@ Mostra memes de gatos correspondentes a gestos com as mãos captados pela webcam
 - **Polegar para cima**: Thumbs up (`thumbs_up.png`)
 - **Sinal do rock**: Gato com guitarra (`rock_guitar.jpg`)
 - **Sinal da paz (peace sign)**: Gato da paz (`peace_sign.jpg`)
+- **Duas palmas abertas viradas para a câmara**: Absolute Cinema (`absolute_cinema.jpg`)
+- **Língua de fora**: Gato com língua de fora (`tongue.jpg`)
+- **Uma sobrancelha levantada**: Gato sobrancelha levantada (`eyebrow.jpg`)
 
 ## Como correr
 

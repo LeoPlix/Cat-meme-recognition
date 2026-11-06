@@ -15,8 +15,12 @@ import gesture_detector as gd
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
-MODEL_PATH = os.path.join(BASE_DIR, 'hand_landmarker.task')
-MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+
+HAND_MODEL_PATH = os.path.join(BASE_DIR, 'hand_landmarker.task')
+HAND_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+
+FACE_MODEL_PATH = os.path.join(BASE_DIR, 'face_landmarker.task')
+FACE_MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
 
 MEME_FILES = {
     'neutral': os.path.join(ASSETS_DIR, 'neutral.jpg'),
@@ -26,12 +30,17 @@ MEME_FILES = {
     'thumbs_up': os.path.join(ASSETS_DIR, 'thumbs_up.png'),
     'rock_guitar': os.path.join(ASSETS_DIR, 'rock_guitar.jpg'),
     'peace_sign': os.path.join(ASSETS_DIR, 'peace_sign.jpg'),
+    'cinema': os.path.join(ASSETS_DIR, 'absolute_cinema.jpg'),
+    'tongue': os.path.join(ASSETS_DIR, 'tongue.jpg'),
+    'eyebrow': os.path.join(ASSETS_DIR, 'eyebrow.jpg'),
 }
 
 
-def ensure_model():
-    if not os.path.exists(MODEL_PATH):
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+def ensure_models():
+    if not os.path.exists(HAND_MODEL_PATH):
+        urllib.request.urlretrieve(HAND_MODEL_URL, HAND_MODEL_PATH)
+    if not os.path.exists(FACE_MODEL_PATH):
+        urllib.request.urlretrieve(FACE_MODEL_URL, FACE_MODEL_PATH)
 
 
 def load_memes():
@@ -60,19 +69,29 @@ def fit_box(img, target_w, target_h):
 
 
 def main():
-    ensure_model()
+    ensure_models()
     meme_images = load_memes()
 
-    base_options = python.BaseOptions(model_asset_path=MODEL_PATH)
-    options = vision.HandLandmarkerOptions(
-        base_options=base_options,
+    hand_options = vision.HandLandmarkerOptions(
+        base_options=python.BaseOptions(model_asset_path=HAND_MODEL_PATH),
         running_mode=vision.RunningMode.IMAGE,
         num_hands=2,
         min_hand_detection_confidence=0.5,
         min_hand_presence_confidence=0.5,
         min_tracking_confidence=0.5
     )
-    detector = vision.HandLandmarker.create_from_options(options)
+    hand_detector = vision.HandLandmarker.create_from_options(hand_options)
+
+    face_options = vision.FaceLandmarkerOptions(
+        base_options=python.BaseOptions(model_asset_path=FACE_MODEL_PATH),
+        running_mode=vision.RunningMode.IMAGE,
+        output_face_blendshapes=True,
+        num_faces=1,
+        min_face_detection_confidence=0.5,
+        min_face_presence_confidence=0.5,
+        min_tracking_confidence=0.5
+    )
+    face_detector = vision.FaceLandmarker.create_from_options(face_options)
 
     camera_id = 0
     cap = cv2.VideoCapture(camera_id)
@@ -102,14 +121,24 @@ def main():
 
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
-        detection_result = detector.detect(mp_image)
-        hands_landmarks = detection_result.hand_landmarks
+
+        hand_result = hand_detector.detect(mp_image)
+        face_result = face_detector.detect(mp_image)
+
+        hands_landmarks = hand_result.hand_landmarks
+        face_blendshapes = face_result.face_blendshapes
 
         if show_landmarks:
             for landmarks in hands_landmarks:
                 gd.draw_hand_landmarks(frame, landmarks)
 
-        raw_gesture = gd.classify_gesture(hands_landmarks)
+        if gd.is_tongue_out(face_blendshapes):
+            raw_gesture = 'tongue'
+        elif gd.is_one_eyebrow_raised(face_blendshapes, face_result.face_landmarks):
+            raw_gesture = 'eyebrow'
+        else:
+            raw_gesture = gd.classify_gesture(hands_landmarks)
+
         current_gesture = smoother.update(raw_gesture)
         meme_img = meme_images.get(current_gesture, meme_images['neutral'])
 
